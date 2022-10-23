@@ -1,8 +1,9 @@
 package com.nw
 
 import com.nw.dao.DatabaseFactory
-import io.ktor.server.application.*
-import com.nw.plugins.*
+import com.nw.plugins.configureRouting
+import com.nw.plugins.configureTemplating
+import io.ktor.server.application.Application
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)

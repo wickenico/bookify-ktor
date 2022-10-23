@@ -16,7 +16,7 @@ data class Book(
     }
 }
 
-object Books: Table() {
+object Books : Table() {
     val id = integer("id").autoIncrement()
     val title = varchar("title", 128)
     val author = varchar("author", 128)
@@ -26,9 +26,11 @@ object Books: Table() {
     override val primaryKey = PrimaryKey(id)
 }
 
-val books = mutableListOf(Book.newBook(
-    "It",
-    "Stephen King",
-    "Rororo",
-    200
-))
+val books = mutableListOf(
+    Book.newBook(
+        "It",
+        "Stephen King",
+        "Rororo",
+        200
+    )
+)

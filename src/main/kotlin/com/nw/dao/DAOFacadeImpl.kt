@@ -53,18 +53,19 @@ class DAOFacadeImpl : DAOFacade {
     }
 
     override suspend fun deleteBook(id: Int): Boolean = dbQuery {
-       Books.deleteWhere { Books.id eq id } > 0
+        Books.deleteWhere { Books.id eq id } > 0
     }
 }
 
 val dao: DAOFacade = DAOFacadeImpl().apply {
     runBlocking {
-        if(allBooks().isEmpty()) {
+        if (allBooks().isEmpty()) {
             addNewBook(
                 "It",
                 "Stephen King",
                 "Rororo",
-                200)
+                200
+            )
         }
     }
 }

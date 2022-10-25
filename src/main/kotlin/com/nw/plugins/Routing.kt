@@ -1,6 +1,13 @@
 package com.nw.plugins
 
 import com.nw.dao.dao
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.get
+import io.ktor.client.statement.HttpResponse
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.server.freemarker.FreeMarkerContent
@@ -14,20 +21,21 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import io.ktor.server.util.getOrFail
+import io.ktor.util.InternalAPI
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 
+@OptIn(InternalAPI::class)
 fun Application.configureRouting() {
+
     routing {
         static("/static") {
             resources("files")
         }
         get("/") {
             call.respondRedirect("books")
-        }
-
-        route("search") {
-            get {
-                call.respond(FreeMarkerContent("search.ftl", model = null))
-            }
         }
 
         route("books") {
@@ -71,6 +79,64 @@ fun Application.configureRouting() {
                         call.respondRedirect("/books")
                     }
                 }
+            }
+        }
+
+        route("search") {
+            get {
+                call.respond(FreeMarkerContent("search.ftl", model = null))
+            }
+
+            get("field") {
+                val isbn = call.request.queryParameters.getOrFail("isbn").toLong()
+                val client = HttpClient(CIO) {
+                    install(ContentNegotiation) {
+                        json(
+                            Json {
+                                prettyPrint = true
+                                isLenient = true
+                            }
+                        )
+                    }
+                }
+                val response: HttpResponse = client.get("https://www.googleapis.com/books/v1/volumes?q=isbn:$isbn")
+                println(response.status)
+                val stringBody: String = response.body()
+                // 9783453528420
+                val json: Map<String, JsonElement> = Json.parseToJsonElement(stringBody).jsonObject
+                // println(json)
+                val items = json["items"]?.jsonArray
+                // println("items: $items")
+                val item = items?.get(0)
+                // println("a: $a")
+                if (item != null) {
+                    val itemInfo = item.jsonObject
+                    println("b: $itemInfo")
+                    val volumeInfo = itemInfo["volumeInfo"]
+                    println("volumeInfo: $volumeInfo")
+
+                    val volumeInfoObject = volumeInfo?.jsonObject
+                    println("c: $volumeInfoObject")
+
+                    val title = volumeInfoObject?.get("title")
+                    println("d: $title")
+
+                    val authors = volumeInfoObject?.get("authors")?.jsonArray
+                    println("authors: $authors")
+
+                    val author = authors?.get(0)
+                    println("author: $author")
+
+                    val publisher = volumeInfoObject?.get("publisher")
+                    println("publisher: $publisher")
+
+                    val pageCount = volumeInfoObject?.get("pageCount")
+                    println("pageCount: $pageCount")
+                }
+
+                client.close()
+                // call.respondRedirect("/search")
+                call.respondRedirect("/search/found")
             }
         }
     }

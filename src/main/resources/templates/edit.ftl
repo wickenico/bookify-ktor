@@ -1,30 +1,40 @@
 <#-- @ftlvariable name="book" type="com.nw.models.Book" -->
 <#import "_layout.ftl" as layout />
 <@layout.header>
-    <div>
+    <div class="container text-center">
         <h3>Edit book</h3>
+
+        <div class="row">
+            <div class="col">
+
         <form action="/books/${book.id}" method="post">
+            <div class="mb-3">
+                <label for="disabledTextInput" class="form-label">Titel</label>
+                <input type="text" class="form-control" name="title" value="${book.title}">
+            </div>
+            <div class="mb-3">
+                <label for="disabledTextInput" class="form-label">Autor</label>
+                <input type="text" class="form-control" name="author" value="${book.author}">
+            </div>
+            <div class="mb-3">
+                <label for="disabledTextInput" class="form-label">Verlag</label>
+                <input type="text" class="form-control" name="publisher" value="${book.publisher}">
+            </div>
+            <div class="mb-3">
+                <label for="disabledTextInput" class="form-label">Seitenanzahl</label>
+                <input type="number" class="form-control" name="pages" value="${book.pages}">
+            </div>
             <p>
-                <input type="text" name="title" value="${book.title}">
-            </p>
-            <p>
-                <input type="text" name="author" value="${book.author}">
-            </p>
-            <p>
-                <input type="text" name="publisher" value="${book.publisher}">
-            </p>
-            <p>
-                <input type="number" name="pages" value="${book.pages}">
-            </p>
-            <p>
-                <input type="submit" name="_action" value="update">
+                <input type="submit" class="btn btn-outline-primary" name="_action" value="update">
             </p>
         </form>
+            </div>
+            </div>
     </div>
     <div>
         <form action="/books/${book.id}" method="post">
             <p>
-                <input type="submit" name="_action" value="delete">
+                <input type="submit" class="btn btn-outline-primary" name="_action" value="delete">
             </p>
         </form>
     </div>

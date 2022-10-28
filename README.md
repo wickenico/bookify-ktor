@@ -3,9 +3,14 @@ A book organization tool written in Kotlin and Ktor with a web frontend.
 
 ## Features to Implement
 - landing page with tiles
-- Call Google Books API
 - Books overview with cards
-- Add ktlint CHECK
+- Add back button
+- Extend Book data structure
+- Image procession
+
+## DONE
+- Add ktlint
+- - Call Google Books API
 
 ## Questions
 - Which database should we use?

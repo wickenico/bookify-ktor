@@ -55,6 +55,16 @@ class DAOFacadeImpl : DAOFacade {
     override suspend fun deleteBook(id: Int): Boolean = dbQuery {
         Books.deleteWhere { Books.id eq id } > 0
     }
+
+    override suspend fun transferBook(id: Int, title: String, author: String, publisher: String, pages: Int): Book? {
+        return Book(
+            id = id,
+            title = title,
+            author = author,
+            publisher = publisher,
+            pages = pages
+        )
+    }
 }
 
 val dao: DAOFacade = DAOFacadeImpl().apply {

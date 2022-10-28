@@ -2,7 +2,7 @@
 <#import "_layout.ftl" as layout />
 <@layout.header>
     <#list books?reverse as book>
-        <div>
+        <#--<div>
             <hr>
             <h3>
                 <a href="/books/${book.id}">${book.title}</a>
@@ -16,7 +16,21 @@
             <p>
                 ${book.pages}
             </p>
+        </div>-->
+<div class="container-fluid">
+    <hr>
+        <div class="row justify-content-center">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="https://via.placeholder.com/286x180" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">${book.title}</h5>
+                <p class="card-text">${book.author} /n ${book.publisher}</p>
+                <a href="/books/${book.id}" class="btn btn-outline-primary">Go to Book</a>
+            </div>
         </div>
+        </div>
+</div>
+
     </#list>
     <hr>
     <p>

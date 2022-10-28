@@ -8,4 +8,5 @@ interface DAOFacade {
     suspend fun addNewBook(title: String, author: String, publisher: String, pages: Int): Book?
     suspend fun editBook(id: Int, title: String, author: String, publisher: String, pages: Int): Boolean
     suspend fun deleteBook(id: Int): Boolean
+    suspend fun transferBook(id: Int, title: String, author: String, publisher: String, pages: Int): Book?
 }

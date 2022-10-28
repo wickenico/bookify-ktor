@@ -102,41 +102,49 @@ fun Application.configureRouting() {
                 val response: HttpResponse = client.get("https://www.googleapis.com/books/v1/volumes?q=isbn:$isbn")
                 println(response.status)
                 val stringBody: String = response.body()
-                // 9783453528420
+
                 val json: Map<String, JsonElement> = Json.parseToJsonElement(stringBody).jsonObject
                 // println(json)
-                val items = json["items"]?.jsonArray
+                val items = json["items"]!!.jsonArray
                 // println("items: $items")
-                val item = items?.get(0)
+                val item = items[0]
                 // println("a: $a")
-                if (item != null) {
-                    val itemInfo = item.jsonObject
-                    println("b: $itemInfo")
-                    val volumeInfo = itemInfo["volumeInfo"]
-                    println("volumeInfo: $volumeInfo")
+                val itemInfo = item.jsonObject
+                println("b: $itemInfo")
+                val volumeInfo = itemInfo["volumeInfo"]
+                println("volumeInfo: $volumeInfo")
 
-                    val volumeInfoObject = volumeInfo?.jsonObject
-                    println("c: $volumeInfoObject")
+                val volumeInfoObject = volumeInfo?.jsonObject
+                println("c: $volumeInfoObject")
 
-                    val title = volumeInfoObject?.get("title")
-                    println("d: $title")
+                var title = volumeInfoObject?.get("title").toString()
+                println("d: $title")
+                title = title.replace("\"", "")
 
-                    val authors = volumeInfoObject?.get("authors")?.jsonArray
-                    println("authors: $authors")
+                val authors = volumeInfoObject?.get("authors")?.jsonArray
+                println("authors: $authors")
 
-                    val author = authors?.get(0)
-                    println("author: $author")
+                var author = authors?.get(0).toString()
+                println("author: $author")
+                author = author.replace("\"", "")
 
-                    val publisher = volumeInfoObject?.get("publisher")
-                    println("publisher: $publisher")
+                var publisher = volumeInfoObject?.get("publisher").toString()
+                println("publisher: $publisher")
+                publisher = publisher.replace("\"", "")
 
-                    val pageCount = volumeInfoObject?.get("pageCount")
-                    println("pageCount: $pageCount")
-                }
+                val pageCount = volumeInfoObject?.get("pageCount")
+                println("pageCount: $pageCount")
 
                 client.close()
-                // call.respondRedirect("/search")
-                call.respondRedirect("/search/found")
+                val book = dao.addNewBook(title, author, publisher, pageCount.toString().toInt())
+                call.respondRedirect("/search/found/${book?.id}")
+            }
+
+            // 9783453528420
+
+            get("found/{id}") {
+                val id = call.parameters.getOrFail<Int>("id").toInt()
+                call.respond(FreeMarkerContent("edit.ftl", mapOf("book" to dao.book(id))))
             }
         }
     }

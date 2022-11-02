@@ -3,7 +3,6 @@ package com.nw.dao
 import com.nw.dao.DatabaseFactory.dbQuery
 import com.nw.models.Book
 import com.nw.models.Books
-import com.nw.models.Books.id
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.deleteWhere
@@ -20,6 +19,7 @@ class DAOFacadeImpl : DAOFacade {
         author = row[Books.author],
         publisher = row[Books.publisher],
         pages = row[Books.pages],
+        imageUrl = row[Books.imageUrl]
     )
 
     override suspend fun allBooks(): List<Book> = dbQuery {
@@ -33,22 +33,24 @@ class DAOFacadeImpl : DAOFacade {
             .singleOrNull()
     }
 
-    override suspend fun addNewBook(title: String, author: String, publisher: String, pages: Int): Book? = dbQuery {
+    override suspend fun addNewBook(title: String, author: String, publisher: String, pages: Int, imageUrl: String): Book? = dbQuery {
         val insertStatement = Books.insert {
             it[Books.title] = title
             it[Books.author] = author
             it[Books.publisher] = publisher
             it[Books.pages] = pages
+            it[Books.imageUrl] = imageUrl
         }
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToBook)
     }
 
-    override suspend fun editBook(id: Int, title: String, author: String, publisher: String, pages: Int): Boolean = dbQuery {
+    override suspend fun editBook(id: Int, title: String, author: String, publisher: String, pages: Int, imageUrl: String): Boolean = dbQuery {
         Books.update({ Books.id eq id }) {
             it[Books.title] = title
             it[Books.author] = author
             it[Books.publisher] = publisher
             it[Books.pages] = pages
+            it[Books.imageUrl] = imageUrl
         } > 0
     }
 
@@ -56,13 +58,14 @@ class DAOFacadeImpl : DAOFacade {
         Books.deleteWhere { Books.id eq id } > 0
     }
 
-    override suspend fun transferBook(id: Int, title: String, author: String, publisher: String, pages: Int): Book? {
+    override suspend fun transferBook(id: Int, title: String, author: String, publisher: String, pages: Int, imageUrl: String): Book? {
         return Book(
             id = id,
             title = title,
             author = author,
             publisher = publisher,
-            pages = pages
+            pages = pages,
+            imageUrl = imageUrl
         )
     }
 }
@@ -74,7 +77,8 @@ val dao: DAOFacade = DAOFacadeImpl().apply {
                 "It",
                 "Stephen King",
                 "Rororo",
-                200
+                200,
+                "test.com"
             )
         }
     }

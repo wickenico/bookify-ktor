@@ -51,7 +51,8 @@ fun Application.configureRouting() {
                 val author = formParameters.getOrFail("author")
                 val publisher = formParameters.getOrFail("publisher")
                 val pages = formParameters.getOrFail("pages").toInt()
-                val book = dao.addNewBook(title, author, publisher, pages)
+                val imageUrl = formParameters.getOrFail("imageUrl")
+                val book = dao.addNewBook(title, author, publisher, pages, imageUrl)
                 call.respondRedirect("/books/${book?.id}")
             }
             get("{id}") {
@@ -71,7 +72,8 @@ fun Application.configureRouting() {
                         val author = formParameters.getOrFail("author")
                         val publisher = formParameters.getOrFail("publisher")
                         val pages = formParameters.getOrFail("pages").toInt()
-                        dao.editBook(id, title, author, publisher, pages)
+                        val imageUrl = formParameters.getOrFail("imageUrl")
+                        dao.editBook(id, title, author, publisher, pages, imageUrl)
                         call.respondRedirect("/books/$id")
                     }
                     "delete" -> {
@@ -135,8 +137,14 @@ fun Application.configureRouting() {
                 val pageCount = volumeInfoObject?.get("pageCount")
                 println("pageCount: $pageCount")
 
+                val imageLinks = volumeInfoObject?.get("imageLinks")?.jsonObject
+                println("imageLinks: $imageLinks")
+
+                var imageUrl = imageLinks?.get("thumbnail").toString()
+                println("imageUrl: $imageUrl")
+
                 client.close()
-                val book = dao.addNewBook(title, author, publisher, pageCount.toString().toInt())
+                val book = dao.addNewBook(title, author, publisher, pageCount.toString().toInt(), imageUrl)
                 call.respondRedirect("/search/found/${book?.id}")
             }
 

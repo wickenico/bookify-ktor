@@ -3,6 +3,7 @@ val kotlin_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
 val h2_version: String by project
+val junitVersion: String by project
 
 plugins {
     application
@@ -47,4 +48,14 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("com.h2database:h2:$h2_version")
+
+    // Testing
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testImplementation("org.assertj:assertj-core:3.23.1")
+}
+
+tasks.test {
+    // Use the built-in JUnit support of Gradle.
+    useJUnitPlatform()
 }

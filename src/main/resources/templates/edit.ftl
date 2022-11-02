@@ -24,6 +24,12 @@
                 <label for="disabledTextInput" class="form-label">Seitenanzahl</label>
                 <input type="number" class="form-control" name="pages" value="${book.pages}">
             </div>
+            <div class="mb-3">
+                <label for="disabledTextInput" class="form-label">Image</label>
+                <input type="text" id="img-url" class="form-control" name="imageUrl" value="${book.imageUrl}">
+                <br>
+                <img src="" id="img-book"/>
+            </div>
             <p>
                 <input type="submit" class="btn btn-outline-primary" name="_action" value="update">
             </p>

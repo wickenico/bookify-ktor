@@ -78,7 +78,7 @@ val dao: DAOFacade = DAOFacadeImpl().apply {
                 "Stephen King",
                 "Rororo",
                 200,
-                "test.com"
+                "http://books.google.com/books/content?id=RXKBrgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
             )
         }
     }

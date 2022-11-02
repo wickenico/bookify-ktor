@@ -134,21 +134,26 @@ fun Application.configureRouting() {
                 println("publisher: $publisher")
                 publisher = publisher.replace("\"", "")
 
-                val pageCount = volumeInfoObject?.get("pageCount")
+                var pageCount = volumeInfoObject?.get("pageCount")
                 println("pageCount: $pageCount")
+
+                var pages = pageCount.toString().toInt()
+                println("pages: $pages")
 
                 val imageLinks = volumeInfoObject?.get("imageLinks")?.jsonObject
                 println("imageLinks: $imageLinks")
 
                 var imageUrl = imageLinks?.get("thumbnail").toString()
+                imageUrl = imageUrl.replace("\"", "").trim()
                 println("imageUrl: $imageUrl")
 
                 client.close()
-                val book = dao.addNewBook(title, author, publisher, pageCount.toString().toInt(), imageUrl)
+                val book = dao.addNewBook(title, author, publisher, pages, imageUrl)
                 call.respondRedirect("/search/found/${book?.id}")
             }
 
             // 9783453528420
+            // 9783866471764
 
             get("found/{id}") {
                 val id = call.parameters.getOrFail<Int>("id").toInt()

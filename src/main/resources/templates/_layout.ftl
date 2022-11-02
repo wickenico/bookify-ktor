@@ -9,8 +9,20 @@
         <link href="/static/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Bookify - Digitalize your bookshelf.</title>
+
+        <script type="text/javascript">
+            function loadImage() {
+                let a1 = document.getElementById("img-url").getAttribute("placeholder");
+                if (!a1) {
+                    a1 = document.getElementById("img-url").getAttribute("value");
+                }
+                const image = document.getElementById("img-book");
+                image.src = a1;
+            }
+        </script>
+
     </head>
-    <body style="text-align: center; font-family: sans-serif">
+    <body style="text-align: center; font-family: sans-serif" onload="loadImage()">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
             <div class="container">

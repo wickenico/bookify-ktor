@@ -30,7 +30,7 @@ object Books : Table() {
     val author = varchar("author", 128)
     val publisher = varchar("publisher", 128)
     val pages = integer("pages")
-    val imageUrl = varchar("imageUrl", 256)
+    val imageUrl = varchar("imageurl", 128)
 
     override val primaryKey = PrimaryKey(id)
 }
@@ -41,6 +41,6 @@ val books = mutableListOf(
         "Stephen King",
         "Rororo",
         200,
-        "nicowickersheim.dev"
+        "http://books.google.com/books/content?id=RXKBrgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
     )
 )

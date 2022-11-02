@@ -2,19 +2,6 @@
 <#import "_layout.ftl" as layout />
 <@layout.header>
     <div class="container text-center">
-        <#--<h3>
-            ${book.title}
-        </h3>
-        <p>
-            ${book.author}
-        </p>
-        <p>
-            ${book.publisher}
-        </p>
-        <p>
-            ${book.pages}
-        </p>
-        <hr>-->
         <h1> Details </h1>
 
         <hr>
@@ -40,9 +27,14 @@
                     <label for="disabledTextInput" class="form-label">Seitenanzahl</label>
                     <input type="text" id="disabledTextInput" class="form-control" placeholder="${book.pages}">
                 </div>
+                <div class="mb-3">
+                    <label for="disabledTextInput" class="form-label">Image</label>
+                    <input type="text" id="img-url" class="form-control" placeholder="${book.imageUrl}">
+                    <br>
+                    <img src="" id="img-book"/>
+                </div>
             </fieldset>
         </form>
-
             </div>
         </div>
         <p>

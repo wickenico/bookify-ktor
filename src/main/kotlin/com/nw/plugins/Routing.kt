@@ -76,6 +76,7 @@ fun Application.configureRouting() {
                         dao.editBook(id, title, author, publisher, pages, imageUrl)
                         call.respondRedirect("/books/$id")
                     }
+
                     "delete" -> {
                         dao.deleteBook(id)
                         call.respondRedirect("/books")

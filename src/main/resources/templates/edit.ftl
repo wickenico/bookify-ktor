@@ -22,7 +22,7 @@
             </div>
             <div class="mb-3">
                 <label for="disabledTextInput" class="form-label">Seitenanzahl</label>
-                <input type="number" class="form-control" name="pages" value="${book.pages}">
+                <input type="number" class="form-control" name="pages" value="${book.pages?c}">
             </div>
             <div class="mb-3">
                 <label for="disabledTextInput" class="form-label">Image</label>
@@ -44,4 +44,12 @@
             </p>
         </form>
     </div>
+    <script type="text/javascript">
+        function loadImage() {
+
+            let a1 = document.getElementById("img-url").getAttribute("value");
+            const image = document.getElementById("img-book");
+            image.src = a1;
+        }
+    </script>
 </@layout.header>

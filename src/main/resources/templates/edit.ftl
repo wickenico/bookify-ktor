@@ -2,6 +2,14 @@
 <#import "_layout.ftl" as layout />
 <@layout.header>
     <div class="container text-center">
+
+        <br>
+
+        <button type="submit" class="btn btn-outline-danger shadow" onclick="location.href='/books/${book.id}'"><i class="fa fa-arrow-left"></i> Back</button>
+
+        <br>
+        <br>
+
         <h1 class=fw-bold">${book.title}</h1>
         <h2 class="fw-light">${book.subtitle}</h2>
 

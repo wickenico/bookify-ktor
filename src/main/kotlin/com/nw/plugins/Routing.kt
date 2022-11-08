@@ -21,13 +21,12 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import io.ktor.server.util.getOrFail
-import io.ktor.util.InternalAPI
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
+import java.time.OffsetDateTime
 
-@OptIn(InternalAPI::class)
 fun Application.configureRouting() {
 
     routing {
@@ -47,12 +46,52 @@ fun Application.configureRouting() {
             }
             post {
                 val formParameters = call.receiveParameters()
+                val isbn10 = formParameters.getOrFail("isbn10")
+                val isbn13 = formParameters.getOrFail("isbn13")
                 val title = formParameters.getOrFail("title")
+                val subtitle = formParameters.getOrFail("subtitle")
                 val author = formParameters.getOrFail("author")
                 val publisher = formParameters.getOrFail("publisher")
                 val pages = formParameters.getOrFail("pages").toInt()
                 val imageUrl = formParameters.getOrFail("imageUrl")
-                val book = dao.addNewBook(title, author, publisher, pages, imageUrl)
+                val selfLink = formParameters.getOrFail("selfLink")
+                val publishedDate = formParameters.getOrFail("publishedDate")
+                val publishedDateFormatted = OffsetDateTime.parse(publishedDate)
+                val description = formParameters.getOrFail("description")
+                val printType = formParameters.getOrFail("printType")
+                val category = formParameters.getOrFail("category")
+                val maturityRating = formParameters.getOrFail("maturityRating")
+                val language = formParameters.getOrFail("language")
+                val infoLink = formParameters.getOrFail("infoLink")
+                val rating = formParameters.getOrFail("rating").toInt()
+                val comment = formParameters.getOrFail("comment")
+                val readStatus = formParameters.getOrFail("readStatus")
+                val addedOnDate = formParameters.getOrFail("addedOnDate")
+                val addedOnDateFormatted = OffsetDateTime.parse(addedOnDate)
+                val tags = formParameters.getOrFail("tags")
+                val book = dao.addNewBook(
+                    isbn10,
+                    isbn13,
+                    title,
+                    subtitle,
+                    author,
+                    publisher,
+                    pages,
+                    imageUrl,
+                    selfLink,
+                    publishedDateFormatted,
+                    description,
+                    printType,
+                    category,
+                    maturityRating,
+                    language,
+                    infoLink,
+                    rating,
+                    comment,
+                    readStatus,
+                    addedOnDateFormatted,
+                    tags
+                )
                 call.respondRedirect("/books/${book?.id}")
             }
             get("{id}") {
@@ -68,12 +107,53 @@ fun Application.configureRouting() {
                 val formParameters = call.receiveParameters()
                 when (formParameters.getOrFail("_action")) {
                     "update" -> {
+                        val isbn10 = formParameters.getOrFail("isbn10")
+                        val isbn13 = formParameters.getOrFail("isbn13")
                         val title = formParameters.getOrFail("title")
+                        val subtitle = formParameters.getOrFail("subtitle")
                         val author = formParameters.getOrFail("author")
                         val publisher = formParameters.getOrFail("publisher")
                         val pages = formParameters.getOrFail("pages").toInt()
                         val imageUrl = formParameters.getOrFail("imageUrl")
-                        dao.editBook(id, title, author, publisher, pages, imageUrl)
+                        val selfLink = formParameters.getOrFail("selfLink")
+                        val publishedDate = formParameters.getOrFail("publishedDate")
+                        // val publishedDateFormatted = OffsetDateTime.parse(publishedDate)
+                        val description = formParameters.getOrFail("description")
+                        val printType = formParameters.getOrFail("printType")
+                        val category = formParameters.getOrFail("category")
+                        val maturityRating = formParameters.getOrFail("maturityRating")
+                        val language = formParameters.getOrFail("language")
+                        val infoLink = formParameters.getOrFail("infoLink")
+                        val rating = formParameters.getOrFail("rating").toInt()
+                        val comment = formParameters.getOrFail("comment")
+                        val readStatus = formParameters.getOrFail("readStatus")
+                        val addedOnDate = formParameters.getOrFail("addedOnDate")
+                        // val addedOnDateFormatted = OffsetDateTime.parse(addedOnDate)
+                        val tags = formParameters.getOrFail("tags")
+                        dao.editBook(
+                            id,
+                            isbn10,
+                            isbn13,
+                            title,
+                            subtitle,
+                            author,
+                            publisher,
+                            pages,
+                            imageUrl,
+                            selfLink,
+                            OffsetDateTime.now(),
+                            description,
+                            printType,
+                            category,
+                            maturityRating,
+                            language,
+                            infoLink,
+                            rating,
+                            comment,
+                            readStatus,
+                            OffsetDateTime.now(),
+                            tags
+                        )
                         call.respondRedirect("/books/$id")
                     }
 
@@ -107,23 +187,37 @@ fun Application.configureRouting() {
                 val stringBody: String = response.body()
 
                 val json: Map<String, JsonElement> = Json.parseToJsonElement(stringBody).jsonObject
-                // println(json)
+
                 val items = json["items"]!!.jsonArray
-                // println("items: $items")
+
                 val item = items[0]
-                // println("a: $a")
+
                 val itemInfo = item.jsonObject
-                println("b: $itemInfo")
+
                 val volumeInfo = itemInfo["volumeInfo"]
-                println("volumeInfo: $volumeInfo")
 
                 val volumeInfoObject = volumeInfo?.jsonObject
-                println("c: $volumeInfoObject")
 
+                // ISBN
+                var isbnArray = volumeInfoObject?.get("industryIdentifiers")?.jsonArray
+
+                var isbn10Object = isbnArray?.get(0)?.jsonObject
+                var isbn10 = isbn10Object?.get("identifier").toString()
+                isbn10 = isbn10.replace("\"", "").trim()
+
+                var isbn13Object = isbnArray?.get(1)?.jsonObject
+                var isbn13 = isbn13Object?.get("identifier").toString()
+                isbn13 = isbn13.replace("\"", "").trim()
+
+                // Title
                 var title = volumeInfoObject?.get("title").toString()
-                println("d: $title")
                 title = title.replace("\"", "")
 
+                // Subtitle
+                var subtitle = volumeInfoObject?.get("subtitle").toString()
+                subtitle = subtitle.replace("\"", "")
+
+                // Author
                 val authors = volumeInfoObject?.get("authors")?.jsonArray
                 println("authors: $authors")
 
@@ -131,25 +225,91 @@ fun Application.configureRouting() {
                 println("author: $author")
                 author = author.replace("\"", "")
 
+                // Publisher
                 var publisher = volumeInfoObject?.get("publisher").toString()
                 println("publisher: $publisher")
                 publisher = publisher.replace("\"", "")
 
+                // Pages
                 var pageCount = volumeInfoObject?.get("pageCount")
-                println("pageCount: $pageCount")
-
                 var pages = pageCount.toString().toInt()
-                println("pages: $pages")
 
+                // Cover Image
                 val imageLinks = volumeInfoObject?.get("imageLinks")?.jsonObject
-                println("imageLinks: $imageLinks")
 
                 var imageUrl = imageLinks?.get("thumbnail").toString()
                 imageUrl = imageUrl.replace("\"", "").trim()
-                println("imageUrl: $imageUrl")
+
+                // Self Link
+                var selfLink = itemInfo["selfLink"].toString()
+                selfLink = selfLink.replace("\"", "").trim()
+
+                // Published Date
+                // var publishedDate = volumeInfoObject?.get("publishedDate").toString()
+                var pDate = OffsetDateTime.now()
+
+                // Description
+                var description = volumeInfoObject?.get("description").toString()
+                description = description.replace("\"", "")
+
+                // Print Type
+                var printType = volumeInfoObject?.get("printType").toString()
+                printType = printType.replace("\"", "")
+
+                // Category
+                var category = ""
+
+                // Maturity Rating
+                var maturityRating = volumeInfoObject?.get("maturityRating").toString()
+                maturityRating = maturityRating.replace("\"", "")
+
+                // Language
+                var language = volumeInfoObject?.get("language").toString()
+                language = language.replace("\"", "")
+
+                // Info Link
+                var infoLink = volumeInfoObject?.get("infoLink").toString()
+                infoLink = infoLink.replace("\"", "")
+
+                // Rating
+                var rating = 0
+
+                // Comment
+                var comment = ""
+
+                // Read Status
+                var readStatus = ""
+
+                // Added On Date
+                var addedOnDate = OffsetDateTime.now()
+
+                // Tags
+                var tags = ""
 
                 client.close()
-                val book = dao.addNewBook(title, author, publisher, pages, imageUrl)
+                val book = dao.addNewBook(
+                    isbn10,
+                    isbn13,
+                    title,
+                    subtitle,
+                    author,
+                    publisher,
+                    pages,
+                    imageUrl,
+                    selfLink,
+                    pDate,
+                    description,
+                    printType,
+                    category,
+                    maturityRating,
+                    language,
+                    infoLink,
+                    rating,
+                    comment,
+                    readStatus,
+                    addedOnDate,
+                    tags
+                )
                 call.respondRedirect("/search/found/${book?.id}")
             }
 

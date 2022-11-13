@@ -181,7 +181,7 @@ fun Application.configureRouting() {
                         )
                     }
                 }
-                val response: HttpResponse = client.get("https://www.googleapis.com/books/v1/volumes?q=isbn:$isbn")
+                val response: HttpResponse = client.get("https://www.googleapis.com/books/v1/volumes?q=isbn:$isbn&country=DE")
                 println(response.status)
                 val stringBody: String = response.body()
 

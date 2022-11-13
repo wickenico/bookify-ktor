@@ -28,7 +28,6 @@ import kotlinx.serialization.json.jsonObject
 import java.time.OffsetDateTime
 
 fun Application.configureRouting() {
-
     routing {
         static("/static") {
             resources("files")

@@ -43,6 +43,7 @@ dependencies {
     implementation("io.ktor:ktor-client-cio-jvm:2.1.3")
     implementation("io.ktor:ktor-client-logging-jvm:2.1.3")
     implementation("io.ktor:ktor-client-serialization-jvm:2.1.3")
+    implementation("io.ktor:ktor-server-status-pages-jvm:2.1.3")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
@@ -53,6 +54,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("com.h2database:h2:$h2_version")
     implementation("mysql:mysql-connector-java:8.0.31")
+    implementation("io.ktor:ktor-server-status-pages:$ktor_version")
 
     // Testing
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")

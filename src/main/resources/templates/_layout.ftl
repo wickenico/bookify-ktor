@@ -50,7 +50,7 @@
     <p><i>Powered by Ktor & Freemarker!</i></p>
     <hr>-->
     <#nested>
-    <a href="/">Back to the main page</a>
+    <!-- <a href="/">Back to the main page</a> -->
     <footer class="border-top footer bg-teal text-light text-center fixed-bottom">
         <div class="container">
             &copy; 2022 - Bookify • Digitalize your bookshelf.

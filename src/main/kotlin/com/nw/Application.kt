@@ -4,6 +4,8 @@ import com.nw.dao.DatabaseFactory
 import com.nw.plugins.configureRouting
 import com.nw.plugins.configureTemplating
 import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.plugins.statuspages.StatusPages
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
@@ -14,4 +16,7 @@ fun Application.module() {
     // configureSerialization()
     configureTemplating()
     configureRouting()
+
+    install(StatusPages) {
+    }
 }

@@ -36,6 +36,12 @@ fun Application.configureRouting() {
             call.respondRedirect("books")
         }
 
+        route("error") {
+            get {
+                call.respond(FreeMarkerContent("error.ftl", model = null))
+            }
+        }
+
         route("books") {
             get {
                 call.respond(FreeMarkerContent("index.ftl", mapOf("books" to dao.allBooks())))
@@ -172,6 +178,7 @@ fun Application.configureRouting() {
             get("field") {
                 val isbn = call.request.queryParameters.getOrFail("isbn").toLong()
                 val client = HttpClient(CIO) {
+                    expectSuccess = true
                     install(ContentNegotiation) {
                         json(
                             Json {
@@ -186,6 +193,11 @@ fun Application.configureRouting() {
                 val stringBody: String = response.body()
 
                 val json: Map<String, JsonElement> = Json.parseToJsonElement(stringBody).jsonObject
+
+                if (json["items"] == null) {
+                    client.close()
+                    call.respondRedirect("/error")
+                }
 
                 val items = json["items"]!!.jsonArray
 
@@ -218,15 +230,12 @@ fun Application.configureRouting() {
 
                 // Author
                 val authors = volumeInfoObject?.get("authors")?.jsonArray
-                println("authors: $authors")
 
                 var author = authors?.get(0).toString()
-                println("author: $author")
                 author = author.replace("\"", "")
 
                 // Publisher
                 var publisher = volumeInfoObject?.get("publisher").toString()
-                println("publisher: $publisher")
                 publisher = publisher.replace("\"", "")
 
                 // Pages

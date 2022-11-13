@@ -10,12 +10,12 @@
                 <div class="form-group has-search">
                     <span class="fa fa-search form-control-feedback"></span>
                     <form action="/search/field" method="get">
-                    <input type="text" class="form-control" name="isbn">
+                    <input type="number" class="form-control" name="isbn">
                     </form>
                 </div>
             </div>
            <br><br><br>
-          <div class="row">
+         <#-- <div class="row">
                 <div class="col-sm-3">
                     <div class="img"><img src="/static/500x900.png" class="img-fluid" alt="Responsive image"></div>
                 </div>
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
 </@layout.header>

@@ -26,6 +26,10 @@ repositories {
     mavenCentral()
 }
 
+tasks.create("stage") {
+    dependsOn("build")
+}
+
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-freemarker-jvm:$ktor_version")

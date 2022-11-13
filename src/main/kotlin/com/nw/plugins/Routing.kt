@@ -33,7 +33,13 @@ fun Application.configureRouting() {
             resources("files")
         }
         get("/") {
-            call.respondRedirect("books")
+            call.respondRedirect("home")
+        }
+
+        route("home") {
+            get {
+                call.respond(FreeMarkerContent("home.ftl", model = null))
+            }
         }
 
         route("error") {

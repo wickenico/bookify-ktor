@@ -1,0 +1,1 @@
+web: ./build/install/bookify-ktor/bin/bookify-ktor

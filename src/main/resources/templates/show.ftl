@@ -85,7 +85,7 @@
                             <label for="disabledTextInput" class="col-form-label">Published Date</label>
                         </div>
                         <div class="col-sm-6">
-                            <input type="date" id="disabledTextInput" class="form-control shadow rounded" placeholder="${book.isbn13}">
+                            <input type="date" id="disabledTextInput" class="form-control shadow rounded text-dark" placeholder="${book.isbn13}">
                         </div>
                     </div>
 
@@ -96,7 +96,7 @@
                             <label for="disabledTextInput" class="col-form-label">Description</label>
                         </div>
                         <div class="col-sm-6">
-                            <textarea class="form-control shadow rounded" rows="3" name="description">${book.description}</textarea>
+                            <textarea class="form-control shadow rounded text-dark" rows="3" name="description">${book.description}</textarea>
                         </div>
                     </div>
 
@@ -209,7 +209,7 @@
                             <label for="disabledTextInput" class="col-form-label">Added on</label>
                         </div>
                         <div class="col-sm-6">
-                            <input type="date" id="disabledTextInput" class="form-control shadow rounded" placeholder="${book.addedOnDate}">
+                            <input type="date" id="disabledTextInput" class="form-control shadow rounded text-dark" placeholder="${book.addedOnDate}">
                         </div>
                     </div>
 

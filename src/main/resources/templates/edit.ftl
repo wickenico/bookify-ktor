@@ -129,7 +129,12 @@
                     <label for="disabledTextInput" class="col-form-label">Print Type</label>
                 </div>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control shadow rounded" name="printType" value="${book.printType}">
+                    <select class="form-select" aria-label="Default select example" name="printType" value="${book.printType}">
+                        <option selected>${book.printType.type}</option>
+                        <option value="BOOK">BOOK</option>
+                        <option value="EBOOK">EBOOK</option>
+                        <option value="MAGAZINE">MAGAZINE</option>
+                    </select>
                 </div>
             </div>
 
@@ -191,7 +196,15 @@
                     <label for="disabledTextInput" class="col-form-label">Rating</label>
                 </div>
                 <div class="col-sm-6">
-                    <input type="number" class="form-control shadow rounded" name="rating" value="${book.rating?c}">
+                    <select class="form-select" aria-label="Default select example" name="rating" value="${book.rating.rating?c}">
+                        <option selected>${book.rating.rating?c}</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
                 </div>
             </div>
 
@@ -213,7 +226,12 @@
                     <label for="disabledTextInput" class="col-form-label">Read Status</label>
                 </div>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control shadow rounded" name="readStatus" value="${book.readStatus}">
+                    <select class="form-select" aria-label="Default select example" name="readStatus" value="${book.readStatus.status}">^
+                        <option selected>${book.readStatus.status}</option>
+                        <option value="UNREAD">UNREAD</option>
+                        <option value="READ">READ</option>
+                        <option value="FINISHED">FINISHED</option>
+                    </select>
                 </div>
             </div>
 

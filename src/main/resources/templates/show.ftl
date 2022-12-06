@@ -107,7 +107,7 @@
                             <label for="disabledTextInput" class="col-form-label">Print Type</label>
                         </div>
                         <div class="col-sm-6">
-                            <input type="text" id="disabledTextInput" class="form-control shadow rounded" placeholder="${book.printType}">
+                            <input type="text" id="disabledTextInput" class="form-control shadow rounded" placeholder="${book.printType.type}">
                         </div>
                     </div>
 
@@ -176,7 +176,7 @@
                             <label for="disabledTextInput" class="col-form-label">Rating</label>
                         </div>
                         <div class="col-sm-6">
-                            <input type="number" id="disabledTextInput" class="form-control shadow rounded" placeholder="${book.rating}">
+                            <input type="number" id="disabledTextInput" class="form-control shadow rounded" placeholder="${book.rating.rating}">
                         </div>
                     </div>
 
@@ -198,7 +198,7 @@
                             <label for="disabledTextInput" class="col-form-label">Read Status</label>
                         </div>
                         <div class="col-sm-6">
-                            <input type="text" id="disabledTextInput" class="form-control shadow rounded" placeholder="${book.readStatus}">
+                            <input type="text" id="disabledTextInput" class="form-control shadow rounded" placeholder="${book.readStatus.status}">
                         </div>
                     </div>
 

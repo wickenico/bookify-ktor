@@ -1,5 +1,8 @@
 package com.nw.models
 
+import com.nw.enums.PrintTypeEnum
+import com.nw.enums.RatingEnum
+import com.nw.enums.ReadStatusEnum
 import com.nw.util.offsetDateTime
 import org.jetbrains.exposed.sql.Table
 import java.time.OffsetDateTime
@@ -18,14 +21,14 @@ data class Book(
     var selfLink: String,
     var publishedDate: OffsetDateTime,
     var description: String,
-    var printType: String, // Enum?
+    var printType: PrintTypeEnum,
     var category: String,
-    var maturityRating: String, // Enum?
+    var maturityRating: String,
     var language: String, // Enum?
     var infoLink: String,
-    var rating: Int,
+    var rating: RatingEnum,
     var comment: String,
-    var readStatus: String, // Enum?
+    var readStatus: ReadStatusEnum,
     var addedOnDate: OffsetDateTime,
     var tags: String
 ) {
@@ -43,14 +46,14 @@ data class Book(
             selfLink: String,
             publishedDate: OffsetDateTime,
             description: String,
-            printType: String,
+            printType: PrintTypeEnum,
             category: String,
             maturityRating: String,
             language: String,
             infoLink: String,
-            rating: Int,
+            rating: RatingEnum,
             comment: String,
-            readStatus: String,
+            readStatus: ReadStatusEnum,
             addedOnDate: OffsetDateTime,
             tags: String
         ) = Book(
@@ -92,15 +95,15 @@ object Books : Table() {
     val imageUrl = varchar("imageUrl", 128)
     val selfLink = varchar("selfLink", 128)
     val publishedDate = offsetDateTime("publishedDate")
-    val description = varchar("description", 999)
-    val printType = varchar("printType", 128)
+    val description = varchar("description", 2048)
+    val printType = enumerationByName("printType", 128, PrintTypeEnum::class)
     val category = varchar("category", 128)
     val maturityRating = varchar("maturityRating", 128)
     val language = varchar("language", 128)
     val infoLink = varchar("infoLink", 128)
-    val rating = integer("rating")
+    val rating = enumeration("rating", RatingEnum::class)
     val comment = varchar("comment", 128)
-    val readStatus = varchar("readStatus", 128)
+    val readStatus = enumerationByName("readStatus", 128, ReadStatusEnum::class)
     val addedOnDate = offsetDateTime("addedOnDate")
     val tags = varchar("tags", 128)
 

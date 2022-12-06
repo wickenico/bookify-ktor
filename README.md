@@ -10,6 +10,7 @@ A book organization tool written in Kotlin and Ktor with a web frontend.
 - More book related data 
 - New Form for book displaying
 - Tests
+- Dark mode switch
 
 ## DONE
 - Add ktlint

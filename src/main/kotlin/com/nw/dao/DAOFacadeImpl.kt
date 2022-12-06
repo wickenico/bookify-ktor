@@ -1,6 +1,9 @@
 package com.nw.dao
 
 import com.nw.dao.DatabaseFactory.dbQuery
+import com.nw.enums.PrintTypeEnum
+import com.nw.enums.RatingEnum
+import com.nw.enums.ReadStatusEnum
 import com.nw.models.Book
 import com.nw.models.Books
 import kotlinx.coroutines.runBlocking
@@ -62,14 +65,14 @@ class DAOFacadeImpl : DAOFacade {
         selfLink: String,
         publishedDate: OffsetDateTime,
         description: String,
-        printType: String,
+        printType: PrintTypeEnum,
         category: String,
         maturityRating: String,
         language: String,
         infoLink: String,
-        rating: Int,
+        rating: RatingEnum,
         comment: String,
-        readStatus: String,
+        readStatus: ReadStatusEnum,
         addedOnDate: OffsetDateTime,
         tags: String
     ): Book? = dbQuery {
@@ -85,14 +88,14 @@ class DAOFacadeImpl : DAOFacade {
             it[Books.selfLink] = selfLink
             it[Books.publishedDate] = publishedDate
             it[Books.description] = description
-            it[Books.printType] = printType
+            it[Books.printType] = PrintTypeEnum.getByValue(printType.type)
             it[Books.category] = category
             it[Books.maturityRating] = maturityRating
             it[Books.language] = language
             it[Books.infoLink] = infoLink
-            it[Books.rating] = rating
+            it[Books.rating] = RatingEnum.getByValue(rating.rating)
             it[Books.comment] = comment
-            it[Books.readStatus] = readStatus
+            it[Books.readStatus] = ReadStatusEnum.getByValue(readStatus.status)
             it[Books.addedOnDate] = addedOnDate
             it[Books.tags] = tags
         }
@@ -112,14 +115,14 @@ class DAOFacadeImpl : DAOFacade {
         selfLink: String,
         publishedDate: OffsetDateTime,
         description: String,
-        printType: String,
+        printType: PrintTypeEnum,
         category: String,
         maturityRating: String,
         language: String,
         infoLink: String,
-        rating: Int,
+        rating: RatingEnum,
         comment: String,
-        readStatus: String,
+        readStatus: ReadStatusEnum,
         addedOnDate: OffsetDateTime,
         tags: String
     ): Boolean = dbQuery {
@@ -135,14 +138,14 @@ class DAOFacadeImpl : DAOFacade {
             it[Books.selfLink] = selfLink
             it[Books.publishedDate] = publishedDate
             it[Books.description] = description
-            it[Books.printType] = printType
+            it[Books.printType] = PrintTypeEnum.getByValue(printType.type)
             it[Books.category] = category
             it[Books.maturityRating] = maturityRating
             it[Books.language] = language
             it[Books.infoLink] = infoLink
-            it[Books.rating] = rating
+            it[Books.rating] = RatingEnum.getByValue(rating.rating)
             it[Books.comment] = comment
-            it[Books.readStatus] = readStatus
+            it[Books.readStatus] = ReadStatusEnum.getByValue(readStatus.status)
             it[Books.addedOnDate] = addedOnDate
             it[Books.tags] = tags
         } > 0

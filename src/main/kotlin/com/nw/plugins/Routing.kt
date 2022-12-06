@@ -1,6 +1,9 @@
 package com.nw.plugins
 
 import com.nw.dao.dao
+import com.nw.enums.PrintTypeEnum
+import com.nw.enums.RatingEnum
+import com.nw.enums.ReadStatusEnum
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -92,14 +95,14 @@ fun Application.configureRouting() {
                     selfLink,
                     publishedDateFormatted,
                     description,
-                    printType,
+                    PrintTypeEnum.valueOf(printType),
                     category,
                     maturityRating,
                     language,
                     infoLink,
-                    rating,
+                    RatingEnum.getByValue(rating),
                     comment,
-                    readStatus,
+                    ReadStatusEnum.valueOf(readStatus),
                     addedOnDateFormatted,
                     tags
                 )
@@ -127,7 +130,7 @@ fun Application.configureRouting() {
                         val pages = formParameters.getOrFail("pages").toInt()
                         val imageUrl = formParameters.getOrFail("imageUrl")
                         val selfLink = formParameters.getOrFail("selfLink")
-                        val publishedDate = formParameters.getOrFail("publishedDate")
+                        // val publishedDate = formParameters.getOrFail("publishedDate")
                         // val publishedDateFormatted = OffsetDateTime.parse(publishedDate)
                         val description = formParameters.getOrFail("description")
                         val printType = formParameters.getOrFail("printType")
@@ -138,7 +141,7 @@ fun Application.configureRouting() {
                         val rating = formParameters.getOrFail("rating").toInt()
                         val comment = formParameters.getOrFail("comment")
                         val readStatus = formParameters.getOrFail("readStatus")
-                        val addedOnDate = formParameters.getOrFail("addedOnDate")
+                        // val addedOnDate = formParameters.getOrFail("addedOnDate")
                         // val addedOnDateFormatted = OffsetDateTime.parse(addedOnDate)
                         val tags = formParameters.getOrFail("tags")
                         dao.editBook(
@@ -154,14 +157,14 @@ fun Application.configureRouting() {
                             selfLink,
                             OffsetDateTime.now(),
                             description,
-                            printType,
+                            PrintTypeEnum.valueOf(printType),
                             category,
                             maturityRating,
                             language,
                             infoLink,
-                            rating,
+                            RatingEnum.getByValue(rating),
                             comment,
-                            readStatus,
+                            ReadStatusEnum.valueOf(readStatus),
                             OffsetDateTime.now(),
                             tags
                         )
@@ -222,9 +225,15 @@ fun Application.configureRouting() {
                 var isbn10 = isbn10Object?.get("identifier").toString()
                 isbn10 = isbn10.replace("\"", "").trim()
 
-                var isbn13Object = isbnArray?.get(1)?.jsonObject
-                var isbn13 = isbn13Object?.get("identifier").toString()
-                isbn13 = isbn13.replace("\"", "").trim()
+                var isbn13: String
+
+                if ((isbnArray?.size ?: 0) > 1) {
+                    var isbn13Object = isbnArray?.get(1)?.jsonObject
+                    isbn13 = isbn13Object?.get("identifier").toString()
+                    isbn13 = isbn13.replace("\"", "").trim()
+                } else {
+                    isbn13 = isbn10
+                }
 
                 // Title
                 var title = volumeInfoObject?.get("title").toString()
@@ -292,7 +301,7 @@ fun Application.configureRouting() {
                 var comment = ""
 
                 // Read Status
-                var readStatus = ""
+                var readStatus = "UNREAD"
 
                 // Added On Date
                 var addedOnDate = OffsetDateTime.now()
@@ -313,14 +322,14 @@ fun Application.configureRouting() {
                     selfLink,
                     pDate,
                     description,
-                    printType,
+                    PrintTypeEnum.getByValue(printType),
                     category,
                     maturityRating,
                     language,
                     infoLink,
-                    rating,
+                    RatingEnum.getByValue(rating),
                     comment,
-                    readStatus,
+                    ReadStatusEnum.getByValue(readStatus),
                     addedOnDate,
                     tags
                 )

@@ -1,5 +1,8 @@
 package com.nw.dao
 
+import com.nw.enums.PrintTypeEnum
+import com.nw.enums.RatingEnum
+import com.nw.enums.ReadStatusEnum
 import com.nw.models.Book
 import java.time.OffsetDateTime
 
@@ -18,14 +21,14 @@ interface DAOFacade {
         selfLink: String,
         publishedDate: OffsetDateTime,
         description: String,
-        printType: String,
+        printType: PrintTypeEnum,
         category: String,
         maturityRating: String,
         language: String,
         infoLink: String,
-        rating: Int,
+        rating: RatingEnum,
         comment: String,
-        readStatus: String,
+        readStatus: ReadStatusEnum,
         addedOnDate: OffsetDateTime,
         tags: String
     ): Book?
@@ -42,14 +45,14 @@ interface DAOFacade {
         selfLink: String,
         publishedDate: OffsetDateTime,
         description: String,
-        printType: String,
+        printType: PrintTypeEnum,
         category: String,
         maturityRating: String,
         language: String,
         infoLink: String,
-        rating: Int,
+        rating: RatingEnum,
         comment: String,
-        readStatus: String,
+        readStatus: ReadStatusEnum,
         addedOnDate: OffsetDateTime,
         tags: String
     ): Boolean

@@ -28,10 +28,10 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/books">Books</a>
                         </li>
-                        <#--<li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Imprint">Imprint</a>
-                        </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="/changelog">Changelog</a>
+                        </li>
+                        <!-- <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">

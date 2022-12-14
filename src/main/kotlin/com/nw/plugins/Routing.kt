@@ -45,6 +45,12 @@ fun Application.configureRouting() {
             }
         }
 
+        route("changelog") {
+            get {
+                call.respond(FreeMarkerContent("changelog.ftl", model = null))
+            }
+        }
+
         route("error") {
             get {
                 call.respond(FreeMarkerContent("error.ftl", model = null))

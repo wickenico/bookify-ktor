@@ -12,6 +12,10 @@ A book organization tool written in Kotlin and Ktor with a web frontend.
 - Tests
 - Dark mode switch
 
+## Integrations to Check
+- Barcodescanner: https://github.com/mebjas/html5-qrcode#how-to-use
+- Backed management with Auth: https://github.com/appwrite/demo-todo-with-vue/tree/main/src/components
+
 ## DONE
 - Add ktlint
 - Call Google Books API

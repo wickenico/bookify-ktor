@@ -11,6 +11,7 @@ A book organization tool written in Kotlin and Ktor with a web frontend.
 - New Form for book displaying
 - Tests
 - Dark mode switch
+- Favorites
 
 ## Integrations to Check
 - Barcodescanner: https://github.com/mebjas/html5-qrcode#how-to-use

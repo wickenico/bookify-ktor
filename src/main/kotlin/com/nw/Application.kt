@@ -1,6 +1,6 @@
 package com.nw
 
-import com.nw.dao.DatabaseFactory
+import com.nw.persistence.DatabaseFactory
 import com.nw.plugins.configureRouting
 import com.nw.plugins.configureTemplating
 import io.ktor.server.application.Application

@@ -1,4 +1,4 @@
-package com.nw.dao
+package com.nw.persistence
 
 import com.nw.enums.PrintTypeEnum
 import com.nw.enums.RatingEnum
@@ -6,7 +6,7 @@ import com.nw.enums.ReadStatusEnum
 import com.nw.models.Book
 import java.time.OffsetDateTime
 
-interface DAOFacade {
+interface BookFacade {
     suspend fun allBooks(): List<Book>
     suspend fun book(id: Int): Book?
     suspend fun addNewBook(
@@ -57,4 +57,6 @@ interface DAOFacade {
         tags: String
     ): Boolean
     suspend fun deleteBook(id: Int): Boolean
+
+    suspend fun findBookByIsbn10orIsbn13(isbn10: String, isbn13: String): Book?
 }

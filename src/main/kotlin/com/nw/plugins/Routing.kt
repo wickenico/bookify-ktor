@@ -1,15 +1,16 @@
 package com.nw.plugins
 
-import com.nw.dao.dao
 import com.nw.enums.PrintTypeEnum
 import com.nw.enums.RatingEnum
 import com.nw.enums.ReadStatusEnum
+import com.nw.persistence.bookFacade
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
@@ -59,7 +60,7 @@ fun Application.configureRouting() {
 
         route("books") {
             get {
-                call.respond(FreeMarkerContent("index.ftl", mapOf("books" to dao.allBooks())))
+                call.respond(FreeMarkerContent("index.ftl", mapOf("books" to bookFacade.allBooks())))
             }
             get("new") {
                 call.respond(FreeMarkerContent("new.ftl", model = null))
@@ -68,6 +69,7 @@ fun Application.configureRouting() {
                 val formParameters = call.receiveParameters()
                 val isbn10 = formParameters.getOrFail("isbn10")
                 val isbn13 = formParameters.getOrFail("isbn13")
+
                 val title = formParameters.getOrFail("title")
                 val subtitle = formParameters.getOrFail("subtitle")
                 val author = formParameters.getOrFail("author")
@@ -89,7 +91,7 @@ fun Application.configureRouting() {
                 val addedOnDate = formParameters.getOrFail("addedOnDate")
                 val addedOnDateFormatted = OffsetDateTime.parse(addedOnDate)
                 val tags = formParameters.getOrFail("tags")
-                val book = dao.addNewBook(
+                val book = bookFacade.addNewBook(
                     isbn10,
                     isbn13,
                     title,
@@ -112,15 +114,16 @@ fun Application.configureRouting() {
                     addedOnDateFormatted,
                     tags
                 )
+
                 call.respondRedirect("/books/${book?.id}")
             }
             get("{id}") {
                 val id = call.parameters.getOrFail<Int>("id").toInt()
-                call.respond(FreeMarkerContent("show.ftl", mapOf("book" to dao.book(id))))
+                call.respond(FreeMarkerContent("show.ftl", mapOf("book" to bookFacade.book(id))))
             }
             get("{id}/edit") {
                 val id = call.parameters.getOrFail<Int>("id").toInt()
-                call.respond(FreeMarkerContent("edit.ftl", mapOf("book" to dao.book(id))))
+                call.respond(FreeMarkerContent("edit.ftl", mapOf("book" to bookFacade.book(id))))
             }
             post("{id}") {
                 val id = call.parameters.getOrFail<Int>("id").toInt()
@@ -150,7 +153,7 @@ fun Application.configureRouting() {
                         // val addedOnDate = formParameters.getOrFail("addedOnDate")
                         // val addedOnDateFormatted = OffsetDateTime.parse(addedOnDate)
                         val tags = formParameters.getOrFail("tags")
-                        dao.editBook(
+                        bookFacade.editBook(
                             id,
                             isbn10,
                             isbn13,
@@ -178,7 +181,7 @@ fun Application.configureRouting() {
                     }
 
                     "delete" -> {
-                        dao.deleteBook(id)
+                        bookFacade.deleteBook(id)
                         call.respondRedirect("/books")
                     }
                 }
@@ -203,7 +206,8 @@ fun Application.configureRouting() {
                         )
                     }
                 }
-                val response: HttpResponse = client.get("https://www.googleapis.com/books/v1/volumes?q=isbn:$isbn&country=DE&maxResults=2")
+                val response: HttpResponse =
+                    client.get("https://www.googleapis.com/books/v1/volumes?q=isbn:$isbn&country=DE&maxResults=2")
                 println(response.status)
                 val stringBody: String = response.body()
 
@@ -241,105 +245,110 @@ fun Application.configureRouting() {
                     isbn13 = isbn10
                 }
 
-                // Title
-                var title = volumeInfoObject?.get("title").toString()
-                title = title.replace("\"", "")
+                if (bookFacade.findBookByIsbn10orIsbn13(isbn10, isbn13) != null) {
+                    call.respond(HttpStatusCode.Conflict, "Book already exists")
+                } else {
 
-                // Subtitle
-                var subtitle = volumeInfoObject?.get("subtitle").toString()
-                subtitle = subtitle.replace("\"", "")
+                    // Title
+                    var title = volumeInfoObject?.get("title").toString()
+                    title = title.replace("\"", "")
 
-                // Author
-                val authors = volumeInfoObject?.get("authors")?.jsonArray
+                    // Subtitle
+                    var subtitle = volumeInfoObject?.get("subtitle").toString()
+                    subtitle = subtitle.replace("\"", "")
 
-                var author = authors?.get(0).toString()
-                author = author.replace("\"", "")
+                    // Author
+                    val authors = volumeInfoObject?.get("authors")?.jsonArray
 
-                // Publisher
-                var publisher = volumeInfoObject?.get("publisher").toString()
-                publisher = publisher.replace("\"", "")
+                    var author = authors?.get(0).toString()
+                    author = author.replace("\"", "")
 
-                // Pages
-                var pageCount = volumeInfoObject?.get("pageCount")
-                var pages = pageCount.toString().toInt()
+                    // Publisher
+                    var publisher = volumeInfoObject?.get("publisher").toString()
+                    publisher = publisher.replace("\"", "")
 
-                // Cover Image
-                val imageLinks = volumeInfoObject?.get("imageLinks")?.jsonObject
+                    // Pages
+                    var pageCount = volumeInfoObject?.get("pageCount")
+                    var pages = pageCount.toString().toInt()
 
-                var imageUrl = imageLinks?.get("thumbnail").toString()
-                imageUrl = imageUrl.replace("\"", "").trim()
+                    // Cover Image
+                    val imageLinks = volumeInfoObject?.get("imageLinks")?.jsonObject
 
-                // Self Link
-                var selfLink = itemInfo["selfLink"].toString()
-                selfLink = selfLink.replace("\"", "").trim()
+                    var imageUrl = imageLinks?.get("thumbnail").toString()
+                    imageUrl = imageUrl.replace("\"", "").trim()
 
-                // Published Date
-                // var publishedDate = volumeInfoObject?.get("publishedDate").toString()
-                var pDate = OffsetDateTime.now()
+                    // Self Link
+                    var selfLink = itemInfo["selfLink"].toString()
+                    selfLink = selfLink.replace("\"", "").trim()
 
-                // Description
-                var description = volumeInfoObject?.get("description").toString()
-                description = description.replace("\"", "")
+                    // Published Date
+                    // var publishedDate = volumeInfoObject?.get("publishedDate").toString()
+                    var pDate = OffsetDateTime.now()
 
-                // Print Type
-                var printType = volumeInfoObject?.get("printType").toString()
-                printType = printType.replace("\"", "")
+                    // Description
+                    var description = volumeInfoObject?.get("description").toString()
+                    description = description.replace("\"", "")
 
-                // Category
-                var category = ""
+                    // Print Type
+                    var printType = volumeInfoObject?.get("printType").toString()
+                    printType = printType.replace("\"", "")
 
-                // Maturity Rating
-                var maturityRating = volumeInfoObject?.get("maturityRating").toString()
-                maturityRating = maturityRating.replace("\"", "")
+                    // Category
+                    var category = ""
 
-                // Language
-                var language = volumeInfoObject?.get("language").toString()
-                language = language.replace("\"", "")
+                    // Maturity Rating
+                    var maturityRating = volumeInfoObject?.get("maturityRating").toString()
+                    maturityRating = maturityRating.replace("\"", "")
 
-                // Info Link
-                var infoLink = volumeInfoObject?.get("infoLink").toString()
-                infoLink = infoLink.replace("\"", "")
+                    // Language
+                    var language = volumeInfoObject?.get("language").toString()
+                    language = language.replace("\"", "")
 
-                // Rating
-                var rating = 0
+                    // Info Link
+                    var infoLink = volumeInfoObject?.get("infoLink").toString()
+                    infoLink = infoLink.replace("\"", "")
 
-                // Comment
-                var comment = ""
+                    // Rating
+                    var rating = 0
 
-                // Read Status
-                var readStatus = "UNREAD"
+                    // Comment
+                    var comment = ""
 
-                // Added On Date
-                var addedOnDate = OffsetDateTime.now()
+                    // Read Status
+                    var readStatus = "UNREAD"
 
-                // Tags
-                var tags = ""
+                    // Added On Date
+                    var addedOnDate = OffsetDateTime.now()
 
-                client.close()
-                val book = dao.addNewBook(
-                    isbn10,
-                    isbn13,
-                    title,
-                    subtitle,
-                    author,
-                    publisher,
-                    pages,
-                    imageUrl,
-                    selfLink,
-                    pDate,
-                    description,
-                    PrintTypeEnum.getByValue(printType),
-                    category,
-                    maturityRating,
-                    language,
-                    infoLink,
-                    RatingEnum.getByValue(rating),
-                    comment,
-                    ReadStatusEnum.getByValue(readStatus),
-                    addedOnDate,
-                    tags
-                )
-                call.respondRedirect("/search/found/${book?.id}")
+                    // Tags
+                    var tags = ""
+
+                    client.close()
+                    val book = bookFacade.addNewBook(
+                        isbn10,
+                        isbn13,
+                        title,
+                        subtitle,
+                        author,
+                        publisher,
+                        pages,
+                        imageUrl,
+                        selfLink,
+                        pDate,
+                        description,
+                        PrintTypeEnum.getByValue(printType),
+                        category,
+                        maturityRating,
+                        language,
+                        infoLink,
+                        RatingEnum.getByValue(rating),
+                        comment,
+                        ReadStatusEnum.getByValue(readStatus),
+                        addedOnDate,
+                        tags
+                    )
+                    call.respondRedirect("/search/found/${book?.id}")
+                }
             }
 
             // 9783453528420
@@ -347,7 +356,7 @@ fun Application.configureRouting() {
 
             get("found/{id}") {
                 val id = call.parameters.getOrFail<Int>("id").toInt()
-                call.respond(FreeMarkerContent("edit.ftl", mapOf("book" to dao.book(id))))
+                call.respond(FreeMarkerContent("edit.ftl", mapOf("book" to bookFacade.book(id))))
             }
         }
     }

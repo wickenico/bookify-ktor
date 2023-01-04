@@ -1,21 +1,23 @@
-package com.nw.dao
+package com.nw.persistence
 
-import com.nw.dao.DatabaseFactory.dbQuery
 import com.nw.enums.PrintTypeEnum
 import com.nw.enums.RatingEnum
 import com.nw.enums.ReadStatusEnum
 import com.nw.models.Book
 import com.nw.models.Books
+import com.nw.persistence.DatabaseFactory.dbQuery
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.orWhere
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
 import java.time.OffsetDateTime
 
-class DAOFacadeImpl : DAOFacade {
+class BookRepository : BookFacade {
 
     private fun resultRowToBook(row: ResultRow) = Book(
         id = row[Books.id],
@@ -49,6 +51,13 @@ class DAOFacadeImpl : DAOFacade {
     override suspend fun book(id: Int): Book? = dbQuery {
         Books
             .select { Books.id eq id }
+            .map(::resultRowToBook)
+            .singleOrNull()
+    }
+
+    override suspend fun findBookByIsbn10orIsbn13(isbn10: String, isbn13: String): Book? = dbQuery {
+        Books.select { Books.isbn10 eq isbn10 }
+            .orWhere { Books.isbn13 eq isbn13 }
             .map(::resultRowToBook)
             .singleOrNull()
     }
@@ -156,7 +165,7 @@ class DAOFacadeImpl : DAOFacade {
     }
 }
 
-val dao: DAOFacade = DAOFacadeImpl().apply {
+val bookFacade: BookFacade = BookRepository().apply {
     runBlocking {
         if (allBooks().isEmpty()) {
 //            addNewBook(

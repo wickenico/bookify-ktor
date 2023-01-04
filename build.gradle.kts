@@ -9,12 +9,12 @@ val junitVersion: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.7.20"
-    id("io.ktor.plugin") version "2.1.3"
-    kotlin("plugin.serialization") version "1.7.20"
+    kotlin("jvm") version "1.8.0"
+    id("io.ktor.plugin") version "2.2.2"
+    kotlin("plugin.serialization") version "1.8.0"
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("com.google.cloud.tools.appengine") version "2.4.2"
+    id("com.google.cloud.tools.appengine") version "2.4.5"
 }
 
 group = "com.nw"
@@ -46,14 +46,14 @@ dependencies {
     implementation("io.ktor:ktor-server-host-common-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm:2.1.2")
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-jackson:$ktor_version")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.3")
-    implementation("io.ktor:ktor-client-core-jvm:2.1.3")
-    implementation("io.ktor:ktor-client-cio-jvm:2.1.3")
-    implementation("io.ktor:ktor-client-logging-jvm:2.1.3")
-    implementation("io.ktor:ktor-client-serialization-jvm:2.1.3")
-    implementation("io.ktor:ktor-server-status-pages-jvm:2.1.3")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation("io.ktor:ktor-client-core-jvm:$ktor_version")
+    implementation("io.ktor:ktor-client-cio-jvm:$ktor_version")
+    implementation("io.ktor:ktor-client-logging-jvm:$ktor_version")
+    implementation("io.ktor:ktor-client-serialization-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-status-pages-jvm:$ktor_version")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")

@@ -34,3 +34,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Constans ###
+/src/main/kotlin/com/nw/const/Constants.kt

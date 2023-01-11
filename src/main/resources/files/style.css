@@ -119,3 +119,8 @@ body {
 .bg-test {
     background-color: red!important;
 }
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+}

@@ -1,5 +1,6 @@
 package com.nw.plugins
 
+import com.nw.auth.UserSession
 import com.nw.enums.PrintTypeEnum
 import com.nw.enums.RatingEnum
 import com.nw.enums.ReadStatusEnum
@@ -14,7 +15,11 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
+import io.ktor.server.auth.UserIdPrincipal
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.principal
 import io.ktor.server.freemarker.FreeMarkerContent
+import io.ktor.server.html.respondHtml
 import io.ktor.server.http.content.resources
 import io.ktor.server.http.content.static
 import io.ktor.server.request.receiveParameters
@@ -24,7 +29,22 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
+import io.ktor.server.sessions.clear
+import io.ktor.server.sessions.sessions
+import io.ktor.server.sessions.set
 import io.ktor.server.util.getOrFail
+import kotlinx.html.FormEncType
+import kotlinx.html.FormMethod
+import kotlinx.html.body
+import kotlinx.html.div
+import kotlinx.html.form
+import kotlinx.html.head
+import kotlinx.html.p
+import kotlinx.html.passwordInput
+import kotlinx.html.style
+import kotlinx.html.submitInput
+import kotlinx.html.textInput
+import kotlinx.html.unsafe
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonArray
@@ -36,14 +56,88 @@ fun Application.configureRouting() {
         static("/static") {
             resources("files")
         }
+
         get("/") {
             call.respondRedirect("home")
         }
 
-        route("home") {
+        /*route("home") {
             get {
+                // val userSession = call.principal<UserSession>()
+                // val name = userSession?.name
+                // println("name = $name")
+                // call.respond(FreeMarkerContent("home.ftl", mapOf("user" to mapOf("name" to name))))
                 call.respond(FreeMarkerContent("home.ftl", model = null))
             }
+        }*/
+
+        route("login") {
+            get {
+                // call.respond(FreeMarkerContent("login.ftl", model = null))
+                call.respondHtml {
+                    head {
+                        style {
+                            unsafe {
+                                +"""
+              .container {
+                height: 100vh;
+                width: 100vw;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+              form {
+                text-align: center;
+              }
+            """
+                            }
+                        }
+                    }
+                    body {
+                        div("container") {
+                            form(
+                                action = "/login",
+                                encType = FormEncType.applicationXWwwFormUrlEncoded,
+                                method = FormMethod.post
+                            ) {
+                                p {
+                                    +"Username:"
+                                    textInput(name = "username")
+                                }
+                                p {
+                                    +"Password:"
+                                    passwordInput(name = "password")
+                                }
+                                p {
+                                    submitInput() { value = "Login" }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        authenticate("auth-form") {
+            post("/login") {
+                val userName = call.principal<UserIdPrincipal>()?.name.toString()
+                println("userName = $userName")
+                call.sessions.set(UserSession(name = userName))
+                call.respondRedirect("/home")
+            }
+        }
+
+        authenticate("auth-session") {
+            get("/home") {
+                val userSession = call.principal<UserSession>()
+                val name = userSession?.name
+                call.respond(FreeMarkerContent("home.ftl", mapOf("user" to mapOf("name" to name))))
+            }
+        }
+
+        get("/logout") {
+            call.sessions.clear<UserSession>()
+            call.respondRedirect("/login")
         }
 
         route("changelog") {
@@ -246,7 +340,9 @@ fun Application.configureRouting() {
                 }
 
                 if (bookFacade.findBookByIsbn10orIsbn13(isbn10, isbn13) != null) {
-                    call.respond(HttpStatusCode.Conflict, "Book already exists")
+                    val status = HttpStatusCode.Conflict
+                    val message = "The book $isbn10 / $isbn13 already exists."
+                    call.respond(status, FreeMarkerContent("error.ftl", mapOf("status" to mapOf("code" to status.value, "message" to message))))
                 } else {
 
                     // Title

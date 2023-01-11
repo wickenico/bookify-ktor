@@ -65,6 +65,9 @@ dependencies {
     implementation("com.h2database:h2:$h2_version")
     implementation("mysql:mysql-connector-java:8.0.31")
     implementation("io.ktor:ktor-server-status-pages:$ktor_version")
+    implementation("io.ktor:ktor-server-auth:$ktor_version")
+    implementation("io.ktor:ktor-server-sessions:$ktor_version")
+    implementation("io.ktor:ktor-server-html-builder:$ktor_version")
 
     // Testing
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")

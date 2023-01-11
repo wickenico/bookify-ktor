@@ -10,7 +10,7 @@
             <div class="card-body">
                 <h5 class="card-title">${book.title}</h5>
                 <p class="card-text">${book.author}</p>
-                <a href="/books/${book.id}" class="btn btn-outline-primary">Go to Book</a>
+                <a href="/books/${book.id}" class="btn btn-outline-primary"><i class="fa fa-info-circle"></i> Go to Details</a>
             </div>
         </div>
         </div>

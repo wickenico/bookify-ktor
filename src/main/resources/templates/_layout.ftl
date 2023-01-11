@@ -21,7 +21,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1 ml-auto" style="display: flex; align-items: center;">
                         <li class="nav-item">
                             <a class="nav-link" href="/">Home</a>
                         </li>
@@ -31,14 +31,21 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/changelog">Changelog</a>
                         </li>
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Changelog">Changelog</a>
-                        </li>-->
                         <li class="nav-item">
                             <a class="nav-link" href="/search">Search</a>
+                        </li>
+                        <#if user.name?has_content>
+                        <li class="nav-item">
+                            <a class="nav-link"> <i class="fa fa-user" aria-hidden="true" style="color:white;"></i> ${user.name}</a>
+                            <#else>
+                            <a class="nav-link"> <i class="fa fa-user" aria-hidden="true" style="color:white;"></i> Hello Guest</a>
+                            </#if>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-danger" href="/logout">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                Logout
+                            </a>
                         </li>
                     </ul>
                 </div>

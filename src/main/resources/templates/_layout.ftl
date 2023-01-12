@@ -16,12 +16,12 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom shadow">
             <div class="container">
                 <a class="navbar-brand"> <img src="/static/favicon-16x16.png" /> Bookify</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="#navbarNav"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1 ml-auto" style="display: flex; align-items: center;">
+                <div class="navbar-collapse collapse" id="navbarNav">
+                    <ul class="navbar-nav" style="display: flex; align-items: center;">
                         <li class="nav-item">
                             <a class="nav-link" href="/">Home</a>
                         </li>
@@ -34,7 +34,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/search">Search</a>
                         </li>
-                        <#if user.name?has_content>
+                        <#if user?? && user.name?has_content>
                         <li class="nav-item">
                             <a class="nav-link"> <i class="fa fa-user" aria-hidden="true" style="color:white;"></i> ${user.name}</a>
                             <#else>
@@ -86,6 +86,8 @@
         </div>
     </footer>
     <script src="/static/switch.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     </body>
     </html>
 </#macro>

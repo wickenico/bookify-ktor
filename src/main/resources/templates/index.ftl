@@ -21,9 +21,12 @@
         document
             .querySelectorAll('img[data-book-cover-src]')
             .forEach(elmNode =>
-
-                elmNode.src = elmNode.dataset.bookCoverSrc
-            );
+            {
+                elmNode.src = elmNode.dataset.bookCoverSrc;
+                elmNode.onerror = function() {
+                    this.src = '/static/500x900.png';
+                }
+            });
     </script>
 
     <hr>

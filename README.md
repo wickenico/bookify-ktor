@@ -12,6 +12,8 @@ A book organization tool written in Kotlin and Ktor with a web frontend.
 - Tests
 - Dark mode switch
 - Favorites
+- Add Hikari 
+- Add Liquibase
 
 ## Integrations to Check
 - Barcodescanner: https://github.com/mebjas/html5-qrcode#how-to-use

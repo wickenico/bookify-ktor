@@ -1,18 +1,15 @@
 package com.nw
 
 import com.nw.auth.UserSession
-import com.nw.const.Constants
 import com.nw.persistence.DatabaseFactory
+import com.nw.plugins.configureCors
 import com.nw.plugins.configureRouting
+import com.nw.plugins.configureSecurity
 import com.nw.plugins.configureTemplating
-import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
-import io.ktor.server.auth.UserIdPrincipal
-import io.ktor.server.auth.form
 import io.ktor.server.auth.session
-import io.ktor.server.response.respond
 import io.ktor.server.response.respondRedirect
 import io.ktor.server.sessions.Sessions
 import io.ktor.server.sessions.cookie
@@ -31,6 +28,7 @@ fun Application.module() {
     }
 
     install(Authentication) {
+/*
         form("auth-form") {
             userParamName = "username"
             passwordParamName = "password"
@@ -45,6 +43,7 @@ fun Application.module() {
                 call.respond(HttpStatusCode.Unauthorized, "Credentials are not valid")
             }
         }
+*/
 
         session<UserSession>("auth-session") {
             validate { session ->
@@ -61,7 +60,9 @@ fun Application.module() {
     }
 
     DatabaseFactory.init()
+    configureSecurity()
     // configureSerialization()
     configureTemplating()
     configureRouting()
+    configureCors()
 }

@@ -9,21 +9,22 @@ A book organization tool written in Kotlin and Ktor with a web frontend.
 - Search suggestions
 - More book related data 
 - New Form for book displaying
-- Tests
-- Dark mode switch
+- Add Tests
 - Favorites
 - Add Hikari 
 - Add Liquibase
+- Add filter actions
+- Authentication check for every page
 
 ## Integrations to Check
-- Barcodescanner: https://github.com/mebjas/html5-qrcode#how-to-use
-- Backed management with Auth: https://github.com/appwrite/demo-todo-with-vue/tree/main/src/components
 - Boringer Avatars: https://cmgriffing.github.io/boringer-avatars/#frameworks
 
 ## DONE
 - Add ktlint
 - Call Google Books API
 - Image procession
+- Dark mode switch
+- - Barcodescanner: https://github.com/mebjas/html5-qrcode#how-to-use
 
 ## Questions
 - Which database should we use?

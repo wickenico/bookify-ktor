@@ -1,5 +1,3 @@
-import com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExtension
-
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
@@ -13,8 +11,6 @@ plugins {
     id("io.ktor.plugin") version "2.2.2"
     kotlin("plugin.serialization") version "1.8.0"
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("com.google.cloud.tools.appengine") version "2.4.5"
 }
 
 group = "com.nw"
@@ -28,16 +24,6 @@ application {
 
 repositories {
     mavenCentral()
-}
-
-configure<AppEngineAppYamlExtension> {
-    stage {
-        setArtifact("build/libs/${project.name}-all.jar")
-    }
-    deploy {
-        version = "GCLOUD_CONFIG"
-        projectId = "GCLOUD_CONFIG"
-    }
 }
 
 dependencies {
@@ -73,7 +59,7 @@ dependencies {
     // Testing
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testImplementation("org.assertj:assertj-core:3.24.1")
+    testImplementation("org.assertj:assertj-core:3.24.2")
 }
 
 tasks.test {

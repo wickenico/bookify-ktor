@@ -4,7 +4,9 @@ import com.nw.auth.UserSession
 import com.nw.enums.PrintTypeEnum
 import com.nw.enums.RatingEnum
 import com.nw.enums.ReadStatusEnum
+import com.nw.models.User
 import com.nw.persistence.bookFacade
+import com.nw.persistence.userFacade
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -14,6 +16,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
+import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
 import io.ktor.server.auth.UserIdPrincipal
 import io.ktor.server.auth.authenticate
@@ -25,11 +28,13 @@ import io.ktor.server.http.content.static
 import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondRedirect
+import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import io.ktor.server.sessions.clear
+import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import io.ktor.server.util.getOrFail
@@ -70,6 +75,57 @@ fun Application.configureRouting() {
                 call.respond(FreeMarkerContent("home.ftl", model = null))
             }
         }*/
+        route("registration") {
+            get {
+                call.respond(FreeMarkerContent("registration.ftl", model = null))
+            }
+
+            post {
+                val formParameters = call.receiveParameters()
+                val name = formParameters.getOrFail("name")
+                val email = formParameters.getOrFail("email")
+                val isEmailVerified = formParameters.getOrFail("isEmailVerified").toBoolean()
+//                val createdAt = formParameters.getOrFail("createdAt")
+//                val createdAtFormatted = OffsetDateTime.parse(createdAt)
+//                val updatedAt = formParameters.getOrFail("updatedAt")
+//                val updatedAtFormatted = OffsetDateTime.parse(updatedAt)
+                val username = formParameters.getOrFail("username")
+                val password = formParameters.getOrFail("password")
+                val user = User.newUser(
+                    name = name,
+                    email = email,
+                    isEmailVerified = isEmailVerified,
+                    createdAt = OffsetDateTime.now(),
+                    updatedAt = OffsetDateTime.now(),
+                    username = username,
+                    password = password
+                )
+                val newUser = userFacade.addNewUser(user)
+                call.respondText("User added with id: ${newUser?.id}")
+            }
+
+            get("{id}") {
+                val id = call.parameters.getOrFail<Int>("id").toInt()
+                call.respond(FreeMarkerContent("registration.ftl", mapOf("user" to userFacade.user(id))))
+            }
+        }
+
+        route("user") {
+            authenticate("auth-session") {
+                get {
+                    val session = call.sessions.get<UserSession>()
+                    val user = session?.let { it1 -> userFacade.findUserByUsername(it1.name) }
+                    if (user != null) {
+                        call.respondRedirect("/user/${user.id}")
+                    }
+                }
+            }
+
+            get("/{id}") {
+                val id = call.parameters.getOrFail<Int>("id").toInt()
+                call.respond(FreeMarkerContent("user.ftl", mapOf("user" to userFacade.user(id))))
+            }
+        }
 
         route("login") {
             get {
@@ -121,7 +177,6 @@ fun Application.configureRouting() {
         authenticate("auth-form") {
             post("/login") {
                 val userName = call.principal<UserIdPrincipal>()?.name.toString()
-                println("userName = $userName")
                 call.sessions.set(UserSession(name = userName))
                 call.respondRedirect("/home")
             }
@@ -129,9 +184,7 @@ fun Application.configureRouting() {
 
         authenticate("auth-session") {
             get("/home") {
-                val userSession = call.principal<UserSession>()
-                val name = userSession?.name
-                call.respond(FreeMarkerContent("home.ftl", mapOf("user" to mapOf("name" to name))))
+                call.respondFreemarker("home.ftl", mapOf())
             }
         }
 
@@ -141,8 +194,10 @@ fun Application.configureRouting() {
         }
 
         route("changelog") {
-            get {
-                call.respond(FreeMarkerContent("changelog.ftl", model = null))
+            authenticate("auth-session") {
+                get {
+                    call.respondFreemarker("changelog.ftl", mapOf())
+                }
             }
         }
 
@@ -153,8 +208,11 @@ fun Application.configureRouting() {
         }
 
         route("books") {
-            get {
-                call.respond(FreeMarkerContent("index.ftl", mapOf("books" to bookFacade.allBooks())))
+            authenticate("auth-session") {
+                get {
+                    // call.respond(FreeMarkerContent("index.ftl", mapOf("books" to bookFacade.allBooks())))
+                    call.respondFreemarker("index.ftl", mapOf("books" to bookFacade.allBooks()))
+                }
             }
             get("new") {
                 call.respond(FreeMarkerContent("new.ftl", model = null))
@@ -283,8 +341,10 @@ fun Application.configureRouting() {
         }
 
         route("search") {
-            get {
-                call.respond(FreeMarkerContent("search.ftl", model = null))
+            authenticate("auth-session") {
+                get {
+                    call.respondFreemarker("search.ftl", mapOf())
+                }
             }
 
             get("field") {
@@ -456,4 +516,9 @@ fun Application.configureRouting() {
             }
         }
     }
+}
+
+suspend fun ApplicationCall.respondFreemarker(template: String, model: Map<Any, Any>) {
+    val session = sessions.get<UserSession>()
+    respond(FreeMarkerContent(template, mapOf("session" to session) + model))
 }

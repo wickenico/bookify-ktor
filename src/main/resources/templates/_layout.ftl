@@ -34,9 +34,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/search">Search</a>
                         </li>
-                        <#if user?? && user.name?has_content>
+                        <#if session?? && session.name?has_content>
                         <li class="nav-item">
-                            <a class="nav-link"> <i class="fa fa-user" aria-hidden="true" style="color:white;"></i> ${user.name}</a>
+                            <a class="nav-link" href="/user"> <i class="fa fa-user" aria-hidden="true" style="color:white;"></i> ${session.name}</a>
                             <#else>
                             <a class="nav-link"> <i class="fa fa-user" aria-hidden="true" style="color:white;"></i> Hello Guest</a>
                             </#if>

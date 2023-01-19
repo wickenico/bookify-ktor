@@ -47,11 +47,7 @@ fun Application.module() {
 
         session<UserSession>("auth-session") {
             validate { session ->
-                if (session.name.startsWith("jet")) {
-                    session
-                } else {
-                    null
-                }
+                session
             }
             challenge {
                 call.respondRedirect("/login")

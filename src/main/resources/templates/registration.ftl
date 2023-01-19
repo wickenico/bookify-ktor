@@ -15,10 +15,10 @@
                 <input type="text" class="form-control shadow rounded" id="isEmailVerified" name="isEmailVerified">
                 <br>
                 <label for="username">Username:</label>
-                <input type="text" class="form-control shadow rounded" id="username" name="username" required>
+                <input type="text" class="form-control shadow rounded" id="username" name="username" autocomplete="one-time-code" required>
                 <br>
                 <label for="password">Password:</label>
-                <input type="password" class="form-control shadow rounded" id="password" name="password" required>
+                <input type="password" class="form-control shadow rounded" id="password" name="password" autocomplete="one-time-code" required>
                 <br>
                 <input type="submit" class="btn btn-outline-primary" value="submit">
                 <input type="reset" class="btn btn-outline-primary" value="clear">

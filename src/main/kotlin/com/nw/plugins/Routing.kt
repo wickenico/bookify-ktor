@@ -40,6 +40,7 @@ import io.ktor.server.sessions.set
 import io.ktor.server.util.getOrFail
 import kotlinx.html.FormEncType
 import kotlinx.html.FormMethod
+import kotlinx.html.a
 import kotlinx.html.body
 import kotlinx.html.div
 import kotlinx.html.form
@@ -129,7 +130,6 @@ fun Application.configureRouting() {
 
         route("login") {
             get {
-                // call.respond(FreeMarkerContent("login.ftl", model = null))
                 call.respondHtml {
                     head {
                         style {
@@ -166,6 +166,10 @@ fun Application.configureRouting() {
                                 }
                                 p {
                                     submitInput() { value = "Login" }
+                                }
+                                p {
+                                    +"Don't have an account? "
+                                    a(href = "/registration") { +"Register here" }
                                 }
                             }
                         }

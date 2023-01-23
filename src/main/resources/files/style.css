@@ -18,6 +18,7 @@ a.navbar-brand {
 
 .footer {
     background-color: teal !important;
+    z-index: -10 !important;
 }
 
 .card {
@@ -154,4 +155,12 @@ body {
     width: 500px;
     margin: 0 auto;
     margin-top: 20px;
+}
+
+.card:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.16), 0 4px 10px rgba(0,0,0,0.23);
+}
+
+.toast-container{
+    z-index: 99;
 }

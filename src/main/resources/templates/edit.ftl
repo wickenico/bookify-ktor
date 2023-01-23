@@ -230,6 +230,7 @@
                         <option selected>${book.readStatus.status}</option>
                         <option value="UNREAD">UNREAD</option>
                         <option value="READ">READ</option>
+                        <option value="READING">READING</option>
                         <option value="FINISHED">FINISHED</option>
                     </select>
                 </div>

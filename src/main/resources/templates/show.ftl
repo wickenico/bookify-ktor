@@ -3,8 +3,9 @@
 <@layout.header>
     <div class="container text-center">
         <h1 class=fw-bold">${book.title}</h1>
-        <h2 class="fw-light">${book.subtitle}</h2>
-
+        <#if book.subtitle != "null">
+            <h2 class="fw-light">${book.subtitle}</h2>
+        </#if>
         <br>
         <!-- <hr> -->
         <div class="shadow p-3 mb-5 bg-white rounded">

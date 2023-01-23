@@ -16,6 +16,7 @@
                                 <h5 class="card-title">${book.title}</h5>
                                 <p class="card-text">${book.author}</p>
                                 <p class="card-text"><small class="text-muted">Hinzugefügt am "${book.addedOnDate.toLocalDate()}</small></p>
+<#--                                <p><iframe data-flag-src="${book.language}" class="img-fluid" alt="..." width="72" height="57" src="https://countryflagsapi.com/png/de"></iframe></p>-->
                                 <a href="/books/${book.id}" class="btn btn-outline-primary" style="display:inline-block; vertical-align:middle;">
                                     <i class="fa fa-info-circle"></i> Go to Details
                                 </a>
@@ -56,6 +57,14 @@
                 elmNode.src = elmNode.dataset.bookCoverSrc;
                 elmNode.onerror = function () {
                     this.src = 'https://via.placeholder.com/128x203';
+                }
+            });
+        document
+            .querySelectorAll('img[data-flag-src]')
+            .forEach(elmNode2 => {
+                elmNode2.src = "https://countryflagsapi.com/png/de";
+                elmNode2.onerror = function () {
+                    this.src = 'https://via.placeholder.com/72x57';
                 }
             });
     </script>

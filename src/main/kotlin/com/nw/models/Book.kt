@@ -95,7 +95,7 @@ object Books : Table() {
     val imageUrl = varchar("imageUrl", 128)
     val selfLink = varchar("selfLink", 128)
     val publishedDate = offsetDateTime("publishedDate")
-    val description = varchar("description", 2048)
+    val description = varchar("description", 5000)
     val printType = enumerationByName("printType", 128, PrintTypeEnum::class)
     val category = varchar("category", 128)
     val maturityRating = varchar("maturityRating", 128)

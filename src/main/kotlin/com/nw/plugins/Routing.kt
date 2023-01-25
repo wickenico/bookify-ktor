@@ -4,8 +4,10 @@ import com.nw.auth.UserSession
 import com.nw.enums.PrintTypeEnum
 import com.nw.enums.RatingEnum
 import com.nw.enums.ReadStatusEnum
+import com.nw.models.Tag
 import com.nw.models.User
 import com.nw.persistence.bookFacade
+import com.nw.persistence.tagFacade
 import com.nw.persistence.userFacade
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -517,6 +519,30 @@ fun Application.configureRouting() {
             get("found/{id}") {
                 val id = call.parameters.getOrFail<Int>("id").toInt()
                 call.respond(FreeMarkerContent("edit.ftl", mapOf("book" to bookFacade.book(id))))
+            }
+        }
+
+        route("/tags") {
+            authenticate("auth-session") {
+                get {
+                    call.respondFreemarker("tags.ftl", mapOf())
+                }
+                post {
+                    val formParameters = call.receiveParameters()
+                    val name = formParameters.getOrFail("name")
+                    val tag = Tag.newTag(
+                        name = name
+                    )
+                    val newTag = tagFacade.addNewTag(tag)
+                    if (newTag != null) {
+                        call.respondRedirect("/tags/${tag.id}")
+                    }
+                }
+
+                get("/{id}") {
+                    val id = call.parameters.getOrFail<Int>("id").toInt()
+                    call.respond(FreeMarkerContent("tags.ftl", mapOf("tag" to tagFacade.tag(id))))
+                }
             }
         }
     }

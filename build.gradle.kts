@@ -4,6 +4,7 @@ val logback_version: String by project
 val exposed_version: String by project
 val h2_version: String by project
 val junitVersion: String by project
+val swagger_codegen_version: String by project
 
 plugins {
     application
@@ -55,6 +56,11 @@ dependencies {
     implementation("io.ktor:ktor-server-sessions:$ktor_version")
     implementation("io.ktor:ktor-server-html-builder:$ktor_version")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
+
+    // Swagger UI and OpenAPI
+    implementation("io.ktor:ktor-server-swagger:$ktor_version")
+    implementation("io.ktor:ktor-server-openapi:$ktor_version")
+    implementation("io.swagger.codegen.v3:swagger-codegen-generators:$swagger_codegen_version")
 
     // Testing
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")

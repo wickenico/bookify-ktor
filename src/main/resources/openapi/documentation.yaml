@@ -1,0 +1,609 @@
+openapi: "3.0.3"
+info:
+  title: "bookify_ktor API"
+  description: "bookify_ktor API"
+  version: "1.0.0"
+servers:
+- url: "https://bookify_ktor"
+paths:
+  /:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "home"
+  /books:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+    post:
+      description: ""
+      parameters:
+      - name: "isbn10"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "isbn13"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "title"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "subtitle"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "author"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "publisher"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "pages"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+      - name: "imageUrl"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "selfLink"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "publishedDate"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "description"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "printType"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "category"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "maturityRating"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "language"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "infoLink"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "rating"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+      - name: "comment"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "readStatus"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "addedOnDate"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "tags"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /books/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+    post:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      - name: "_action"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "isbn10"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "isbn13"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "title"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "subtitle"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "author"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "publisher"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "pages"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+      - name: "imageUrl"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "selfLink"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "description"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "printType"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "category"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "maturityRating"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "language"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "infoLink"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "rating"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+      - name: "comment"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "readStatus"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "tags"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "/books"
+                Example#2:
+                  value: ""
+  /books/{id}/edit:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+  /books/new:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+  /changelog:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+  /error:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+  /home:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+  /login:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Function1"
+              examples:
+                text/html:
+                  description: "HTML document"
+                  value: ""
+    post:
+      description: ""
+      responses:
+        "200":
+          description: "OK <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "/home"
+  /logout:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "/login"
+  /registration:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+    post:
+      description: ""
+      parameters:
+      - name: "name"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "email"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "isEmailVerified"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "username"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "password"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /registration/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+  /search:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+  /search/field:
+    get:
+      description: ""
+      parameters:
+      - name: "isbn"
+        in: "query"
+        required: false
+        schema:
+          type: "number"
+      responses:
+        "200":
+          description: "OK <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: "/error"
+        "409":
+          description: "Conflict"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+  /search/found/{id}:
+    get:
+      description: "9783453528420 <br> 9783866471764"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+  /tags:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+    post:
+      description: ""
+      parameters:
+      - name: "name"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /tags/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+  /user:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /user/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FreeMarkerContent"
+components:
+  schemas:
+    Object:
+      type: "object"
+      properties: {}
+    HeaderValueParam:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        value:
+          type: "string"
+        escapeValue:
+          type: "boolean"
+    ContentType:
+      type: "object"
+      properties:
+        contentType:
+          type: "string"
+        contentSubtype:
+          type: "string"
+        parameters:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/HeaderValueParam"
+    FreeMarkerContent:
+      type: "object"
+      properties:
+        template:
+          type: "string"
+        model:
+          $ref: "#/components/schemas/Object"
+        etag:
+          type: "string"
+        contentType:
+          $ref: "#/components/schemas/ContentType"
+    Function1:
+      type: "object"
+      properties: {}

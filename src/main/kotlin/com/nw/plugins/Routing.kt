@@ -27,6 +27,8 @@ import io.ktor.server.freemarker.FreeMarkerContent
 import io.ktor.server.html.respondHtml
 import io.ktor.server.http.content.resources
 import io.ktor.server.http.content.static
+import io.ktor.server.plugins.openapi.openAPI
+import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondRedirect
@@ -40,6 +42,7 @@ import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import io.ktor.server.util.getOrFail
+import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
 import kotlinx.html.FormEncType
 import kotlinx.html.FormMethod
 import kotlinx.html.a
@@ -544,6 +547,14 @@ fun Application.configureRouting() {
                     call.respond(FreeMarkerContent("tags.ftl", mapOf("tag" to tagFacade.tag(id))))
                 }
             }
+        }
+
+        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml") {
+            version = "4.15.5"
+        }
+
+        openAPI(path = "openapi", swaggerFile = "openapi/documentation.yaml") {
+            codegen = StaticHtmlCodegen()
         }
     }
 }

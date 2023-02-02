@@ -528,7 +528,7 @@ fun Application.configureRouting() {
         route("/tags") {
             authenticate("auth-session") {
                 get {
-                    call.respondFreemarker("tags.ftl", mapOf())
+                    call.respondFreemarker("tags.ftl", mapOf("tags" to tagFacade.allTags()))
                 }
                 post {
                     val formParameters = call.receiveParameters()

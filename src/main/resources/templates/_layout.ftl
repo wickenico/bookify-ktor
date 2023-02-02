@@ -32,6 +32,9 @@
                             <a class="nav-link" href="/changelog">Changelog</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="/tags">Tags</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="/search">Search</a>
                         </li>
                         <#if session?? && session.name?has_content>
